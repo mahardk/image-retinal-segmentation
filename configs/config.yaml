@@ -42,27 +42,19 @@ preprocessing:
 
 patch:
   size: 48
-
-  # Paper: total 40.000 patch dari 40 citra training.
   patches_per_image: 1000
-
-  positive_per_image: 500
-  negative_per_image: 500
-
-  # Ini adalah parameter implementasi kita,
-  # karena paper tidak menjelaskan threshold sampling secara numerik.
-  positive_vessel_ratio: 0.01
-  negative_vessel_ratio: 0.001
 
 training:
   validation_split: 0.20
 
+  # Implementation detail.
+  # The paper does not explicitly specify the batch size.
   batch_size: 16
+
   epochs: 50
 
   optimizer: "SGD"
   learning_rate: 0.01
-  momentum: 0.9
 
   num_workers: 0
 
@@ -72,8 +64,8 @@ model:
   input_channels: 1
   output_channels: 1
 
-  # Jumlah channel ini tidak ditentukan eksplisit oleh paper.
-  # Kita jadikan hyperparameter implementasi.
+  # Implementation detail.
+  # The paper does not explicitly specify these channel numbers.
   channels:
     - 32
     - 64
@@ -81,6 +73,7 @@ model:
     - 256
     - 512
 
+  # Implementation detail.
   attention_reduction: 32
 
 evaluation:
