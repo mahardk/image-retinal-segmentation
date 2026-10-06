@@ -1,0 +1,87 @@
+project:
+  name: "Retinal Vessel Segmentation"
+  reference: "CAS-UNet with Coordinate Attention"
+
+seed: 42
+
+dataset:
+  drive_dir: "data/raw/DRIVE"
+  chase_dir: "data/raw/CHASEDB1"
+
+  # Paper menggunakan 20 DRIVE + 20 CHASE untuk training
+  # dan 20 DRIVE + 8 CHASE untuk testing.
+  chase_train_subjects:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+
+  chase_test_subjects:
+    - 11
+    - 12
+    - 13
+    - 14
+
+preprocessing:
+  grayscale: true
+
+  clahe:
+    clip_limit: 2.0
+    tile_grid_size:
+      - 8
+      - 8
+
+  gamma:
+    value: 0.8
+
+patch:
+  size: 48
+
+  # Paper: total 40.000 patch dari 40 citra training.
+  patches_per_image: 1000
+
+  positive_per_image: 500
+  negative_per_image: 500
+
+  # Ini adalah parameter implementasi kita,
+  # karena paper tidak menjelaskan threshold sampling secara numerik.
+  positive_vessel_ratio: 0.01
+  negative_vessel_ratio: 0.001
+
+training:
+  validation_split: 0.20
+
+  batch_size: 16
+  epochs: 50
+
+  optimizer: "SGD"
+  learning_rate: 0.01
+  momentum: 0.9
+
+  num_workers: 0
+
+  device: "cuda"
+
+model:
+  input_channels: 1
+  output_channels: 1
+
+  # Jumlah channel ini tidak ditentukan eksplisit oleh paper.
+  # Kita jadikan hyperparameter implementasi.
+  channels:
+    - 32
+    - 64
+    - 128
+    - 256
+    - 512
+
+  attention_reduction: 32
+
+evaluation:
+  threshold: 0.5
