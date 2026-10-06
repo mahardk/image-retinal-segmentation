@@ -2,7 +2,7 @@ import numpy as np
 
 from src.preprocessing.grayscale import rgb_to_grayscale
 from src.preprocessing.clahe import apply_clahe
-from src.preprocessing.gamma import gamma_correction
+from src.preprocessing.gamma import apply_gamma
 
 
 SCENARIOS = (
@@ -40,7 +40,7 @@ def preprocess_image(
     if scenario == "clahe":
         return clahe
 
-    return gamma_correction(
+    return apply_gamma(
         clahe,
         gamma=gamma,
     )
